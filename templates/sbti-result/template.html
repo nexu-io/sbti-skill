@@ -7,7 +7,7 @@
   <meta name="description" content="{{OPENING_LINE}} — 匹配度 {{MATCH_PERCENT}}%。30 题 × 15 维度 × 27 种赛博人格，来测测你的！" />
   <meta property="og:title" content="我的 SBTI 赛博人格：【{{PERSONALITY_CODE}}】{{PERSONALITY_NAME}}" />
   <meta property="og:description" content="{{OPENING_LINE}} — 匹配度 {{MATCH_PERCENT}}%" />
-  <meta property="og:image" content="./{{AVATAR_CODE}}.webp" />
+  <meta property="og:image" content="data:image/webp;base64,{{AVATAR_BASE64}}" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
@@ -341,7 +341,7 @@
 
   <!-- ═══ AVATAR HERO ═══ -->
   <div class="avatar-section">
-    <img class="avatar-img" src="./{{AVATAR_CODE}}.webp" alt="{{PERSONALITY_CODE}}（{{PERSONALITY_NAME}}）" />
+    <img class="avatar-img" src="data:image/webp;base64,{{AVATAR_BASE64}}" alt="{{PERSONALITY_CODE}}（{{PERSONALITY_NAME}}）" />
     <div class="avatar-overlay"></div>
     <div class="avatar-info">
       <span class="avatar-code">{{PERSONALITY_CODE}}</span>

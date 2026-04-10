@@ -23,6 +23,12 @@ requires:
 
 # 🧠 SBTI 赛博人格测试
 
+> ## 📁 路径约定
+>
+> 本文档中所有 `{baseDir}` 指的是**此 SKILL.md 文件所在的目录**。
+> 使用时请将 `{baseDir}` 替换为实际的相对路径（例如 `./` 或 skill 安装目录）。
+> **不要使用绝对路径**，始终使用相对于当前工作目录的路径。
+
 > ## 🚨 核心规则
 >
 > **规则 1：必须完整走完所有 30 道题。** 不能跳题，不能猜测用户答案，不能自己替用户选择。每道题都要展示完整选项文本。
@@ -254,13 +260,19 @@ node {baseDir}/deploy/deploy_skill.js setup --base-url https://deploy.nexu.io
 | `{{MATCH_PERCENT}}` | 匹配度百分比（纯数字） | `93` |
 | `{{OPENING_LINE}}` | 开场白 | `怎么样，被我拿捏了吧？` |
 | `{{DESCRIPTION}}` | 完整人格描述 | （从 personalities.md 获取） |
-| `{{AVATAR_CODE}}` | 头像图片代码（用于拼接图片 URL） | `CTRL` |
+| `{{AVATAR_BASE64}}` | 头像图片的 base64 编码 | （见下方生成方法） |
 
-**头像代码映射规则：**
-- 大多数人格直接用 `PERSONALITY_CODE`，如 `CTRL` → `CTRL`
-- `WOC!` → `WOC`（去掉感叹号）
-- `HHHH` 和 `DRUNK` 也有对应头像
-- 头像文件存放在 `{baseDir}/templates/sbti-result/avatars/{AVATAR_CODE}.webp`
+**头像 base64 生成方法：**
+
+头像文件在 `{baseDir}/templates/sbti-result/avatars/` 目录下，用以下命令获取 base64：
+
+```bash
+base64 -i {baseDir}/templates/sbti-result/avatars/{CODE}.webp | tr -d '\n'
+```
+
+将输出的 base64 字符串直接替换 `{{AVATAR_BASE64}}`。
+
+**头像文件名映射：** 大多数人格直接用代码，如 `CTRL.webp`。`WOC!` 对应 `WOC.webp`（去掉感叹号）。
 
 **15 维度占位符（每个维度两个：等级值 + CSS class）：**
 
@@ -301,31 +313,28 @@ class 规则：高 → `h`，中 → `m`，低 → `l`（小写）
 
 #### 6.3 打包并部署
 
-将生成的 HTML 和人格头像一起打包成 zip，然后用 deploy 脚本上传：
+由于头像已内联为 base64，部署包**只需要一个 index.html 文件**，无需任何外部资源：
 
 ```bash
-# 创建临时目录
-mkdir -p ~/.nexu/deploy-skill-generated/sbti-result
+# 1. 创建临时目录（每次清空重建）
+rm -rf /tmp/sbti-deploy && mkdir -p /tmp/sbti-deploy
 
-# 将 HTML 写入 index.html（agent 执行写入操作）
+# 2. 将替换完占位符的 HTML 写入 index.html
+#   （Agent 用写文件工具将最终 HTML 写入 /tmp/sbti-deploy/index.html）
 
-# 复制匹配到的人格头像（只需复制该用户匹配的那一个）
-cp {baseDir}/templates/sbti-result/avatars/{AVATAR_CODE}.webp \
-   ~/.nexu/deploy-skill-generated/sbti-result/
+# 3. 打包（只有 index.html 一个文件）
+cd /tmp/sbti-deploy && zip -r /tmp/sbti-result.zip .
 
-# 打包
-cd ~/.nexu/deploy-skill-generated/sbti-result && zip -r ../sbti-result.zip .
-
-# 提交部署
+# 4. 提交部署
 node {baseDir}/deploy/deploy_skill.js submit \
-  --zip ~/.nexu/deploy-skill-generated/sbti-result.zip \
+  --zip /tmp/sbti-result.zip \
   --bot-id BOT_ID \
   --chat-id CHAT_ID \
   --chat-type channel \
   --channel slack
 ```
 
-> **注意**：头像图片存放在 `{baseDir}/templates/sbti-result/avatars/` 目录下，文件名为 `{CODE}.webp`。HTML 中使用相对路径 `./{{AVATAR_CODE}}.webp` 引用，必须确保头像文件和 `index.html` 在同一目录下一起打包。
+> **关键**：模板中的头像图片已经通过 `{{AVATAR_BASE64}}` 内联到 HTML 的 `<img src="data:image/webp;base64,...">` 中，**不需要复制任何图片文件**，zip 里只有 `index.html`。
 
 #### 6.4 部署成功后的消息
 
@@ -344,6 +353,8 @@ node {baseDir}/deploy/deploy_skill.js submit \
 - **唯一部署通道**：只能使用 `{baseDir}/deploy/deploy_skill.js`，最终 URL 必须是 `nexu.space` 域名
 - **禁止替代方案**：不得使用 GitHub Gist、GitHub Pages、htmlpreview、Vercel、Netlify 或任何其他方式部署
 - **禁止自建 HTML**：必须使用 `{baseDir}/templates/sbti-result/template.html` 模板，不得从零编写 HTML
+- **禁止外部资源引用**：最终 HTML 不得引用任何外部图片/CSS/JS URL，所有资源必须内联（头像用 base64、样式用 inline CSS）
+- **不要使用绝对路径**：所有 `{baseDir}` 引用必须是相对路径
 - 不要捏造 job id、URL 或完成状态
 - 部署期间不能说"已上线"——必须等到 status=succeeded 且有 nexu.space URL
 - 如果部署失败，如实告知用户错误信息，**不得自行切换到其他部署方式**
