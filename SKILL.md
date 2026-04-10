@@ -255,8 +255,8 @@ node {baseDir}/deploy/deploy_skill.js setup --base-url https://deploy.nexu.io
 **头像代码映射规则：**
 - 大多数人格直接用 `PERSONALITY_CODE`，如 `CTRL` → `CTRL`
 - `WOC!` → `WOC`（去掉感叹号）
-- `HHHH` 和 `DRUNK` 为特殊人格，无头像，可用 `HHHH` / `DRUNK`
-- 图片来源：`https://luoluo.help/sbti/{AVATAR_CODE}.webp`
+- `HHHH` 和 `DRUNK` 也有对应头像
+- 头像文件存放在 `{baseDir}/templates/sbti-result/avatars/{AVATAR_CODE}.webp`
 
 **15 维度占位符（每个维度两个：等级值 + CSS class）：**
 
@@ -297,13 +297,17 @@ class 规则：高 → `h`，中 → `m`，低 → `l`（小写）
 
 #### 6.3 打包并部署
 
-将生成的 HTML 写入临时文件，打包成 zip，然后用 deploy 脚本上传：
+将生成的 HTML 和人格头像一起打包成 zip，然后用 deploy 脚本上传：
 
 ```bash
 # 创建临时目录
 mkdir -p ~/.nexu/deploy-skill-generated/sbti-result
 
 # 将 HTML 写入 index.html（agent 执行写入操作）
+
+# 复制匹配到的人格头像（只需复制该用户匹配的那一个）
+cp {baseDir}/templates/sbti-result/avatars/{AVATAR_CODE}.webp \
+   ~/.nexu/deploy-skill-generated/sbti-result/
 
 # 打包
 cd ~/.nexu/deploy-skill-generated/sbti-result && zip -r ../sbti-result.zip .
@@ -316,6 +320,8 @@ node {baseDir}/deploy/deploy_skill.js submit \
   --chat-type channel \
   --channel slack
 ```
+
+> **注意**：头像图片存放在 `{baseDir}/templates/sbti-result/avatars/` 目录下，文件名为 `{CODE}.webp`。HTML 中使用相对路径 `./{{AVATAR_CODE}}.webp` 引用，必须确保头像文件和 `index.html` 在同一目录下一起打包。
 
 #### 6.4 部署成功后的消息
 
