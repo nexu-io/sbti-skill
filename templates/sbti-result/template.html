@@ -156,6 +156,55 @@
       color: var(--text-4);
     }
 
+    /* ── Radar Section ── */
+    .radar-section {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .radar-container {
+      display: flex;
+      justify-content: center;
+      margin: 8px 0 12px;
+    }
+    #radarChart {
+      width: 280px;
+      height: 260px;
+    }
+    .rarity-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .rarity-badge {
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .rarity-badge.ssr {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #78350f;
+    }
+    .rarity-badge.sr {
+      background: linear-gradient(135deg, #c084fc, #a855f7);
+      color: #fff;
+    }
+    .rarity-badge.r {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      color: #fff;
+    }
+    .rarity-badge.n {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .rarity-info {
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
     /* ── Dimension Section ── */
     .model-group {
       margin-bottom: 16px;
@@ -435,6 +484,18 @@
     <p class="quote">"{{OPENING_LINE}}"</p>
     <p class="description">{{DESCRIPTION}}</p>
 
+    <!-- ── Radar Chart ── -->
+    <div class="radar-section">
+      <div class="section-title">📊 五维雷达</div>
+      <div class="radar-container">
+        <svg id="radarChart" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="rarity-row">
+        <span class="rarity-badge {{RARITY_CLASS}}">{{RARITY_TIER}}</span>
+        <span class="rarity-info">{{RARITY_LABEL}} · 人群占比 {{RARITY_PCT}}%</span>
+      </div>
+    </div>
+
     <!-- ── Summary Strip ── -->
     <div class="summary-strip">
       <div class="summary-group">
@@ -685,6 +746,60 @@ function copySkill(el) {
     setTimeout(function() { el.textContent = orig; }, 1800);
   });
 }
+(function() {
+  var data = [{{RADAR_S}}, {{RADAR_E}}, {{RADAR_A}}, {{RADAR_AC}}, {{RADAR_SO}}];
+  var labels = ['自我', '情感', '态度', '行动', '社交'];
+  var svg = document.getElementById('radarChart');
+  if (!svg) return;
+  var ns = 'http://www.w3.org/2000/svg';
+  var cx = 150, cy = 125, R = 95;
+  function pt(i, s) {
+    var a = Math.PI * 2 * i / 5 - Math.PI / 2;
+    return [cx + R * s * Math.cos(a), cy + R * s * Math.sin(a)];
+  }
+  function mkPoly(pts, fill, stroke, sw) {
+    var el = document.createElementNS(ns, 'polygon');
+    el.setAttribute('points', pts.map(function(p) { return p.join(','); }).join(' '));
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', stroke);
+    el.setAttribute('stroke-width', sw);
+    svg.appendChild(el);
+  }
+  [0.33, 0.66, 1.0].forEach(function(s) {
+    var pts = [];
+    for (var i = 0; i < 5; i++) pts.push(pt(i, s));
+    mkPoly(pts, 'none', '#dbe8dd', '1');
+  });
+  for (var i = 0; i < 5; i++) {
+    var p = pt(i, 1);
+    var line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+    line.setAttribute('x2', p[0]); line.setAttribute('y2', p[1]);
+    line.setAttribute('stroke', '#dbe8dd'); line.setAttribute('stroke-width', '1');
+    svg.appendChild(line);
+  }
+  var dataPts = [];
+  for (var i = 0; i < 5; i++) dataPts.push(pt(i, data[i] / 100));
+  mkPoly(dataPts, 'rgba(16,185,129,0.15)', '#10b981', '2');
+  dataPts.forEach(function(p) {
+    var c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', p[0]); c.setAttribute('cy', p[1]);
+    c.setAttribute('r', '4'); c.setAttribute('fill', '#10b981');
+    svg.appendChild(c);
+  });
+  for (var i = 0; i < 5; i++) {
+    var p = pt(i, 1.22);
+    var t = document.createElementNS(ns, 'text');
+    t.setAttribute('x', p[0]); t.setAttribute('y', p[1]);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('dominant-baseline', 'middle');
+    t.setAttribute('font-family', 'Inter, Noto Sans SC, sans-serif');
+    t.setAttribute('font-size', '12'); t.setAttribute('font-weight', '600');
+    t.setAttribute('fill', '#3a4a3e');
+    t.textContent = labels[i] + ' ' + data[i];
+    svg.appendChild(t);
+  }
+})();
 </script>
 </body>
 </html>
