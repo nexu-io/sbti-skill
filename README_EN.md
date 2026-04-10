@@ -19,7 +19,7 @@ The most viral personality test on the Chinese internet, now playable inside you
 
 ---
 
-> 🧠 **SBTI** is part of the [nexu](https://github.com/nexu-io/nexu) ecosystem — the open-source OpenClaw desktop client.
+> 🧠 **SBTI** is part of the [nexu](https://github.com/nexu-io/nexu) ecosystem — the one-click-install open-source OpenClaw desktop client.
 
 ---
 
