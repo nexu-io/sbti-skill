@@ -293,6 +293,19 @@ node {baseDir}/deploy/deploy_skill.js setup --base-url https://deploy.nexu.io
 
 #### 6.2 生成结果页 HTML
 
+> ⚠️ **落地页必填占位符清单 — 全部 45 个占位符必须替换，缺一不可：**
+>
+> | 类别 | 占位符数量 | 占位符列表 |
+> |------|-----------|-----------|
+> | 基础信息 | 6 个 | `PERSONALITY_CODE`, `PERSONALITY_NAME`, `MATCH_PERCENT`, `OPENING_LINE`, `DESCRIPTION`, `AVATAR_BASE64` |
+> | **雷达图** | **5 个** | **`RADAR_S`, `RADAR_E`, `RADAR_A`, `RADAR_AC`, `RADAR_SO`** |
+> | **稀有度** | **4 个** | **`RARITY_TIER`, `RARITY_LABEL`, `RARITY_PCT`, `RARITY_CLASS`** |
+> | 15 维度 | 30 个 | `S1`~`SO3` 值 + `S1_CLASS`~`SO3_CLASS`（每维度 2 个） |
+> | TOP 3 | 9 个 | `TOP1_CODE`~`TOP3_PCT` |
+>
+> **如果有任何 `{{...}}` 占位符未被替换，禁止进入 6.3 部署步骤。**
+> **特别注意：雷达图和稀有度是新增字段，容易遗漏，必须逐项确认。**
+
 读取模板文件 `{baseDir}/templates/sbti-result/template.html`，将以下占位符替换为实际测试结果：
 
 **基础信息占位符：**
@@ -373,6 +386,23 @@ class 规则：高 → `h`，中 → `m`，低 → `l`（小写）
 | `{{TOP3_CODE}}` | 第 3 名人格代码 | `GOGO` |
 | `{{TOP3_NAME}}` | 第 3 名中文名 | `行者` |
 | `{{TOP3_PCT}}` | 第 3 名匹配度 | `83` |
+
+#### 6.2.1 部署前验证（必须执行）
+
+在写入 HTML 文件之前，**必须逐项确认以下占位符已全部替换**：
+
+```
+✅ 检查清单（逐项确认）：
+□ PERSONALITY_CODE / PERSONALITY_NAME / MATCH_PERCENT — 基础信息
+□ OPENING_LINE / DESCRIPTION — 开场白和描述
+□ AVATAR_BASE64 — 头像 base64（用 base64 命令生成）
+□ RADAR_S / RADAR_E / RADAR_A / RADAR_AC / RADAR_SO — 五维雷达得分（H=100,M=60,L=25 取均值）
+□ RARITY_TIER / RARITY_LABEL / RARITY_PCT / RARITY_CLASS — 稀有度（查 personalities.md）
+□ S1~SO3 + S1_CLASS~SO3_CLASS — 15 维度值和 CSS class
+□ TOP1~TOP3 的 CODE / NAME / PCT — TOP 3 匹配
+```
+
+> **如果最终 HTML 中仍包含 `{{` 字符串，说明有占位符未被替换，必须修复后才能部署。**
 
 #### 6.3 打包并部署
 
