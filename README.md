@@ -13,13 +13,52 @@
 
 <br/>
 
-[安装](#安装) · [玩法](#玩法) · [27 种人格](#27-种人格一览) · [工作原理](#工作原理) · [交流群](#交流群) · [English](README_EN.md)
+[效果展示](#效果展示) · [安装](#安装) · [玩法](#玩法) · [27 种人格](#27-种人格一览) · [工作原理](#工作原理) · [交流群](#交流群) · [English](README_EN.md)
 
 <br/>
 
 ---
 
-> 🧠 **SBTI 赛博人格测试** 是 [nexu](https://github.com/nexu-io/nexu) 生态的一部分 — 你的开源 AI 数字员工客户端。
+> 🧠 **SBTI 赛博人格测试** 是 [nexu](https://github.com/nexu-io/nexu) 生态的一部分 — 可一键安装的开源 OpenClaw 桌面客户端。
+
+---
+
+## 效果展示
+
+<table>
+<tr>
+<td width="50%">
+
+**1. 安装 Skill**
+
+<img src="assets/demo-install.png" alt="安装 SBTI Skill" width="400" />
+
+</td>
+<td width="50%">
+
+**2. 选择测试模式**
+
+<img src="assets/demo-start.png" alt="选择测试模式" width="400" />
+
+</td>
+</tr>
+<tr>
+<td>
+
+**3. Agent 自测过程**
+
+<img src="assets/demo-agent-test.png" alt="Agent 自测答题" width="400" />
+
+</td>
+<td>
+
+**4. 测试结果**
+
+<img src="assets/demo-result.png" alt="测试结果展示" width="400" />
+
+</td>
+</tr>
+</table>
 
 ---
 
