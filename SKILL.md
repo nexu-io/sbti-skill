@@ -241,6 +241,8 @@ node {baseDir}/deploy/deploy_skill.js setup --base-url https://deploy.nexu.io
 
 读取模板文件 `{baseDir}/templates/sbti-result/template.html`，将以下占位符替换为实际测试结果：
 
+**基础信息占位符：**
+
 | 占位符 | 替换为 | 示例 |
 |--------|--------|------|
 | `{{PERSONALITY_CODE}}` | 人格代码 | `CTRL` |
@@ -248,38 +250,42 @@ node {baseDir}/deploy/deploy_skill.js setup --base-url https://deploy.nexu.io
 | `{{MATCH_PERCENT}}` | 匹配度百分比（纯数字） | `93` |
 | `{{OPENING_LINE}}` | 开场白 | `怎么样，被我拿捏了吧？` |
 | `{{DESCRIPTION}}` | 完整人格描述 | （从 personalities.md 获取） |
-| `{{LEVEL_CODE}}` | 15 位等级码 | `HHL-HMH-MMH-HHM-LHH` |
-| `{{PAGE_URL}}` | 留空或填 `#`，部署后会有真实 URL | `#` |
-| `{{DIMENSION_BARS}}` | 15 个维度的进度条 HTML | 见下方模板 |
-| `{{TOP3_LIST}}` | TOP 3 匹配列表 HTML | 见下方模板 |
 
-**维度条 HTML 模板**（每个模型生成一个 dimension-group）：
+**15 维度占位符（每个维度两个：等级值 + CSS class）：**
 
-```html
-<div class="dimension-group">
-  <div class="dimension-group-title">🧠 自我模型</div>
-  <div class="dim-row">
-    <span class="dim-label">S1 自尊自信</span>
-    <div class="dim-track"><div class="dim-fill h"></div></div>
-    <span class="dim-level h">H</span>
-  </div>
-  <!-- S2, S3 同理 -->
-</div>
-<!-- 情感模型、态度模型、行动驱力、社交模型同理 -->
-```
+| 维度 | 值占位符 | class 占位符 | 说明 |
+|------|---------|-------------|------|
+| S1 自尊自信 | `{{S1}}` | `{{S1_CLASS}}` | 值填 H/M/L，class 填 h/m/l |
+| S2 自我清晰度 | `{{S2}}` | `{{S2_CLASS}}` | 同上 |
+| S3 核心价值 | `{{S3}}` | `{{S3_CLASS}}` | 同上 |
+| E1 依恋安全感 | `{{E1}}` | `{{E1_CLASS}}` | 同上 |
+| E2 情感投入度 | `{{E2}}` | `{{E2_CLASS}}` | 同上 |
+| E3 边界与依赖 | `{{E3}}` | `{{E3_CLASS}}` | 同上 |
+| A1 世界观倾向 | `{{A1}}` | `{{A1_CLASS}}` | 同上 |
+| A2 规则灵活度 | `{{A2}}` | `{{A2_CLASS}}` | 同上 |
+| A3 人生意义感 | `{{A3}}` | `{{A3_CLASS}}` | 同上 |
+| Ac1 动机导向 | `{{AC1}}` | `{{AC1_CLASS}}` | 同上 |
+| Ac2 决策风格 | `{{AC2}}` | `{{AC2_CLASS}}` | 同上 |
+| Ac3 执行模式 | `{{AC3}}` | `{{AC3_CLASS}}` | 同上 |
+| So1 社交主动性 | `{{SO1}}` | `{{SO1_CLASS}}` | 同上 |
+| So2 人际边界感 | `{{SO2}}` | `{{SO2_CLASS}}` | 同上 |
+| So3 表达真实度 | `{{SO3}}` | `{{SO3_CLASS}}` | 同上 |
 
-维度条 class 规则：等级 H → class `h`，M → class `m`，L → class `l`
+class 规则：等级 H → `h`，M → `m`，L → `l`（小写）
 
-**TOP3 HTML 模板**：
+**TOP 3 占位符：**
 
-```html
-<li>
-  <span class="rank r1">1</span>
-  <div class="info"><span class="code">CTRL</span> <span class="pname">拿捏者</span></div>
-  <span class="percent">93%</span>
-</li>
-<!-- 第 2、3 名同理，rank 用 r2、r3 -->
-```
+| 占位符 | 替换为 | 示例 |
+|--------|--------|------|
+| `{{TOP1_CODE}}` | 第 1 名人格代码 | `CTRL` |
+| `{{TOP1_NAME}}` | 第 1 名中文名 | `拿捏者` |
+| `{{TOP1_PCT}}` | 第 1 名匹配度 | `93` |
+| `{{TOP2_CODE}}` | 第 2 名人格代码 | `BOSS` |
+| `{{TOP2_NAME}}` | 第 2 名中文名 | `领导者` |
+| `{{TOP2_PCT}}` | 第 2 名匹配度 | `87` |
+| `{{TOP3_CODE}}` | 第 3 名人格代码 | `GOGO` |
+| `{{TOP3_NAME}}` | 第 3 名中文名 | `行者` |
+| `{{TOP3_PCT}}` | 第 3 名匹配度 | `83` |
 
 #### 6.3 打包并部署
 
