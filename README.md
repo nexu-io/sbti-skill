@@ -13,7 +13,7 @@
 
 <br/>
 
-[安装](#安装) · [玩法](#玩法) · [27 种人格](#27-种人格一览) · [工作原理](#工作原理) · [English](README_EN.md)
+[安装](#安装) · [玩法](#玩法) · [27 种人格](#27-种人格一览) · [工作原理](#工作原理) · [交流群](#交流群) · [English](README_EN.md)
 
 <br/>
 
@@ -199,6 +199,14 @@ SBTI 赛博人格测试原版由 B 站 UP 主创作：
 - 介绍视频：https://www.bilibili.com/video/BV1LpDHByET6/
 
 本 Skill 基于原版测试的公开规则制作，将其适配为 AI Agent 可交互的 Skill 格式。感谢原作者的创意。
+
+---
+
+## 交流群
+
+扫码加入微信交流群，一起聊 SBTI 和 nexu：
+
+<img src="assets/wechat-group-qr.png" alt="微信交流群" width="200" />
 
 ---
 
