@@ -212,6 +212,115 @@ q2 [S1 自尊自信]: C — 我不会觉得周围的人比我优秀
 ═══════════════════════════════════════
 ```
 
+### Step 6: 生成可分享的落地页（部署到 nexu.space）
+
+展示完测试结果后，**主动询问用户是否想生成一个可分享的落地页**：
+
+```
+🌐 要不要把你的 SBTI 测试结果生成一个可分享的网页？
+
+生成后你会得到一个 nexu.space 的链接，可以直接发朋友圈/群里。
+```
+
+如果用户同意，按以下步骤执行：
+
+#### 6.1 环境检查
+
+```bash
+# 检查 deploy-skill 配置
+node {baseDir}/deploy/deploy_skill.js check
+```
+
+如果没有配置，先执行 setup：
+
+```bash
+node {baseDir}/deploy/deploy_skill.js setup --base-url https://deploy.nexu.io
+```
+
+#### 6.2 生成结果页 HTML
+
+读取模板文件 `{baseDir}/templates/sbti-result/template.html`，将以下占位符替换为实际测试结果：
+
+| 占位符 | 替换为 | 示例 |
+|--------|--------|------|
+| `{{PERSONALITY_CODE}}` | 人格代码 | `CTRL` |
+| `{{PERSONALITY_NAME}}` | 人格中文名 | `拿捏者` |
+| `{{MATCH_PERCENT}}` | 匹配度百分比（纯数字） | `93` |
+| `{{OPENING_LINE}}` | 开场白 | `怎么样，被我拿捏了吧？` |
+| `{{DESCRIPTION}}` | 完整人格描述 | （从 personalities.md 获取） |
+| `{{LEVEL_CODE}}` | 15 位等级码 | `HHL-HMH-MMH-HHM-LHH` |
+| `{{PAGE_URL}}` | 留空或填 `#`，部署后会有真实 URL | `#` |
+| `{{DIMENSION_BARS}}` | 15 个维度的进度条 HTML | 见下方模板 |
+| `{{TOP3_LIST}}` | TOP 3 匹配列表 HTML | 见下方模板 |
+
+**维度条 HTML 模板**（每个模型生成一个 dimension-group）：
+
+```html
+<div class="dimension-group">
+  <div class="dimension-group-title">🧠 自我模型</div>
+  <div class="dim-row">
+    <span class="dim-label">S1 自尊自信</span>
+    <div class="dim-track"><div class="dim-fill h"></div></div>
+    <span class="dim-level h">H</span>
+  </div>
+  <!-- S2, S3 同理 -->
+</div>
+<!-- 情感模型、态度模型、行动驱力、社交模型同理 -->
+```
+
+维度条 class 规则：等级 H → class `h`，M → class `m`，L → class `l`
+
+**TOP3 HTML 模板**：
+
+```html
+<li>
+  <span class="rank r1">1</span>
+  <div class="info"><span class="code">CTRL</span> <span class="pname">拿捏者</span></div>
+  <span class="percent">93%</span>
+</li>
+<!-- 第 2、3 名同理，rank 用 r2、r3 -->
+```
+
+#### 6.3 打包并部署
+
+将生成的 HTML 写入临时文件，打包成 zip，然后用 deploy 脚本上传：
+
+```bash
+# 创建临时目录
+mkdir -p ~/.nexu/deploy-skill-generated/sbti-result
+
+# 将 HTML 写入 index.html（agent 执行写入操作）
+
+# 打包
+cd ~/.nexu/deploy-skill-generated/sbti-result && zip -r ../sbti-result.zip .
+
+# 提交部署
+node {baseDir}/deploy/deploy_skill.js submit \
+  --zip ~/.nexu/deploy-skill-generated/sbti-result.zip \
+  --bot-id BOT_ID \
+  --chat-id CHAT_ID \
+  --chat-type channel \
+  --channel slack
+```
+
+#### 6.4 部署成功后的消息
+
+当部署完成，向用户发送：
+
+```
+🎉 你的 SBTI 测试结果页已上线！
+
+🔗 链接：{link}
+
+分享文案（已复制到剪贴板）：
+"我的 SBTI 赛博人格是【{代码}】{中文名}！匹配度 {百分比}%，来测测你的 → {link}"
+```
+
+**部署规则（继承 deploy-skill 的反幻觉规则）：**
+- 不要捏造 job id、URL 或完成状态
+- 部署期间不能说"已上线"——必须等到 status=succeeded 且有 nexu.space URL
+- 如果部署失败，如实告知用户错误信息
+
 ---
 
 ## 关于 SBTI

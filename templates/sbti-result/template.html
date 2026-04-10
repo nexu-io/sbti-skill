@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SBTI 赛博人格测试结果 — {{PERSONALITY_CODE}}</title>
+  <meta name="description" content="我的 SBTI 人格是【{{PERSONALITY_CODE}}】{{PERSONALITY_NAME}}，匹配度 {{MATCH_PERCENT}}%。来测测你的赛博人格！" />
+  <meta property="og:title" content="我的 SBTI 赛博人格：【{{PERSONALITY_CODE}}】{{PERSONALITY_NAME}}" />
+  <meta property="og:description" content="{{OPENING_LINE}} — 匹配度 {{MATCH_PERCENT}}%" />
+  <meta property="og:url" content="{{PAGE_URL}}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --card-border: #1e1e2a;
+      --text: #e0e0e6;
+      --text-dim: #8888a0;
+      --accent: #7c6fff;
+      --accent-glow: rgba(124, 111, 255, 0.3);
+      --bar-h: #7c6fff;
+      --bar-m: #ff9f43;
+      --bar-l: #ff6b6b;
+      --tag-bg: rgba(124, 111, 255, 0.15);
+      --tag-text: #a99bff;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+    [data-theme="light"] {
+      --bg: #f5f5f8;
+      --card: #ffffff;
+      --card-border: #e0e0e8;
+      --text: #1a1a2e;
+      --text-dim: #666680;
+      --tag-bg: rgba(124, 111, 255, 0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .page { max-width: 680px; margin: 0 auto; padding: 24px 16px 60px; }
+    .header {
+      text-align: center;
+      padding: 40px 0 20px;
+    }
+    .header-badge {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+    .header .name {
+      font-size: 20px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+    .match-bar {
+      margin: 20px auto;
+      max-width: 300px;
+    }
+    .match-bar label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+    .match-track {
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .match-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #a78bfa);
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .opening-line {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: center;
+      padding: 24px 20px;
+      background: linear-gradient(135deg, rgba(124,111,255,0.08), rgba(167,139,250,0.08));
+      border-radius: var(--radius-sm);
+    }
+    .opening-line::before { content: '"'; color: var(--accent); font-size: 32px; }
+    .opening-line::after { content: '"'; color: var(--accent); font-size: 32px; }
+
+    .description {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .dimension-group {
+      margin-bottom: 20px;
+    }
+    .dimension-group:last-child { margin-bottom: 0; }
+    .dimension-group-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dim-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .dim-label {
+      font-size: 13px;
+      color: var(--text-dim);
+      width: 80px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .dim-track {
+      flex: 1;
+      height: 10px;
+      background: var(--card-border);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .dim-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.8s ease;
+    }
+    .dim-fill.h { background: var(--bar-h); width: 100%; }
+    .dim-fill.m { background: var(--bar-m); width: 65%; }
+    .dim-fill.l { background: var(--bar-l); width: 30%; }
+    .dim-level {
+      font-size: 13px;
+      font-weight: 600;
+      width: 20px;
+      text-align: center;
+    }
+    .dim-level.h { color: var(--bar-h); }
+    .dim-level.m { color: var(--bar-m); }
+    .dim-level.l { color: var(--bar-l); }
+
+    .level-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      text-align: center;
+      padding: 12px;
+      background: var(--card-border);
+      border-radius: var(--radius-sm);
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .top3 { list-style: none; }
+    .top3 li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .top3 li:last-child { border-bottom: none; }
+    .top3 .rank {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .top3 .rank.r1 { background: var(--accent); color: #fff; }
+    .top3 .rank.r2 { background: var(--tag-bg); color: var(--tag-text); }
+    .top3 .rank.r3 { background: var(--tag-bg); color: var(--tag-text); }
+    .top3 .info { flex: 1; }
+    .top3 .code { font-weight: 600; }
+    .top3 .pname { color: var(--text-dim); font-size: 14px; }
+    .top3 .percent { font-weight: 600; color: var(--accent); }
+
+    .cta {
+      text-align: center;
+      padding: 32px 0;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .share-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    .share-btn:hover { border-color: var(--accent); }
+
+    .footer {
+      text-align: center;
+      padding: 24px 0;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 16px;
+      z-index: 100;
+    }
+
+    @media (max-width: 480px) {
+      .header h1 { font-size: 32px; }
+      .dim-label { width: 60px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">☽</button>
+
+  <div class="page">
+    <div class="header">
+      <div class="header-badge">🧠 SBTI 赛博人格测试</div>
+      <h1>{{PERSONALITY_CODE}}</h1>
+      <div class="name">{{PERSONALITY_NAME}}</div>
+      <div class="match-bar">
+        <label><span>匹配度</span><span>{{MATCH_PERCENT}}%</span></label>
+        <div class="match-track"><div class="match-fill" style="width:{{MATCH_PERCENT}}%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="opening-line">{{OPENING_LINE}}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📖 人格解读</div>
+      <div class="description">{{DESCRIPTION}}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 15 维度分析</div>
+      <div class="level-code">{{LEVEL_CODE}}</div>
+
+      {{DIMENSION_BARS}}
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏆 最接近的 3 种人格</div>
+      <ul class="top3">
+        {{TOP3_LIST}}
+      </ul>
+    </div>
+
+    <div class="cta">
+      <a class="cta-btn" href="https://github.com/nexu-io/sbti-skill" target="_blank">🧠 也来测测我的赛博人格</a>
+      <div class="share-row">
+        <button class="share-btn" onclick="shareX()">𝕏 分享</button>
+        <button class="share-btn" onclick="shareRedNote()">📕 小红书</button>
+        <button class="share-btn" onclick="copyLink()">🔗 复制链接</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      Made with <a href="https://github.com/nexu-io/nexu">nexu</a> ·
+      <a href="https://github.com/nexu-io/sbti-skill">sbti-skill</a> ·
+      原版测试 <a href="https://sbti.unun.dev/">sbti.unun.dev</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.dataset.theme === 'light' ? 'dark' : 'light';
+      html.dataset.theme = next;
+      document.querySelector('.theme-toggle').textContent = next === 'light' ? '☀' : '☽';
+      localStorage.setItem('sbti-theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('sbti-theme') || 'dark';
+      document.documentElement.dataset.theme = saved;
+      document.querySelector('.theme-toggle').textContent = saved === 'light' ? '☀' : '☽';
+    })();
+
+    function shareX() {
+      const text = encodeURIComponent('我的 SBTI 赛博人格是【{{PERSONALITY_CODE}}】{{PERSONALITY_NAME}}！匹配度 {{MATCH_PERCENT}}% 👉');
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+    }
+    function shareRedNote() { window.open('xhsdiscover://post', '_blank'); }
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const btn = event.target;
+        btn.textContent = '✅ 已复制';
+        setTimeout(() => btn.textContent = '🔗 复制链接', 1800);
+      });
+    }
+  </script>
+</body>
+</html>
