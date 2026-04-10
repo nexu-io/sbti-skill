@@ -33,6 +33,7 @@ The most viral personality test on the Chinese internet, now playable inside you
 | 📖 **Deep Reading** | 200-300 word roast-style personality description |
 | 🏆 **Top 3 Matches** | Your closest 3 personality types with match percentages |
 | 🍺 **Hidden Easter Egg** | Trigger conditions classified. Involves baijiu in a thermos... |
+| 🌐 **Shareable Landing Page** | One-click deploy to nexu.space, get a link to share |
 
 ---
 
@@ -158,6 +159,12 @@ sbti-skill/
 ├── README.md             # Chinese docs
 ├── README_EN.md          # English docs
 ├── LICENSE               # MIT License
+├── deploy/               # Deploy channel (nexu.space)
+│   ├── deploy_skill.js
+│   └── deploy_skill_core.js
+├── templates/
+│   └── sbti-result/
+│       └── template.html # Result page HTML template
 └── references/
     ├── personalities.md  # All 27 personality profiles
     └── questions.md      # All 30 + 2 questions with scoring
