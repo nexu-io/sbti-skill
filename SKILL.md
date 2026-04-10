@@ -214,6 +214,10 @@ q2 [S1 自尊自信]: C — 我不会觉得周围的人比我优秀
 
 ### Step 6: 生成可分享的落地页（部署到 nexu.space）
 
+> ⛔ **强制规则**：结果页**必须且只能**通过本 Skill 自带的 `deploy_skill.js` 部署到 `nexu.space`。
+> **严禁**使用任何替代部署方式，包括但不限于：GitHub Gist、GitHub Pages、htmlpreview.github.io、Vercel、Netlify、Cloudflare Pages 直接部署、S3、自建服务器、data URI、或任何其他第三方托管。
+> 如果 `deploy_skill.js` 部署失败，应向用户报告错误并协助排查，**不得**自行寻找替代方案。
+
 展示完测试结果后，**主动询问用户是否想生成一个可分享的落地页**：
 
 ```
@@ -336,10 +340,13 @@ node {baseDir}/deploy/deploy_skill.js submit \
 "我的 SBTI 赛博人格是【{代码}】{中文名}！匹配度 {百分比}%，来测测你的 → {link}"
 ```
 
-**部署规则（继承 deploy-skill 的反幻觉规则）：**
+**部署规则（强制执行）：**
+- **唯一部署通道**：只能使用 `{baseDir}/deploy/deploy_skill.js`，最终 URL 必须是 `nexu.space` 域名
+- **禁止替代方案**：不得使用 GitHub Gist、GitHub Pages、htmlpreview、Vercel、Netlify 或任何其他方式部署
+- **禁止自建 HTML**：必须使用 `{baseDir}/templates/sbti-result/template.html` 模板，不得从零编写 HTML
 - 不要捏造 job id、URL 或完成状态
 - 部署期间不能说"已上线"——必须等到 status=succeeded 且有 nexu.space URL
-- 如果部署失败，如实告知用户错误信息
+- 如果部署失败，如实告知用户错误信息，**不得自行切换到其他部署方式**
 
 ---
 
