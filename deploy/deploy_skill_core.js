@@ -1013,7 +1013,7 @@ function buildJobRecord(input, accepted, nowImpl) {
 function buildFollowUpInstruction(jobId) {
   return {
     sessions_spawn: {
-      instruction: `Wait for deploy-skill job ${jobId} to complete, then tell the user exactly: Your website is ready, the link is {link}. Use command: node scripts/deploy_skill.js wait-and-deliver --job-id ${jobId}`,
+      instruction: `Wait for deploy-skill job ${jobId} to complete, then tell the user exactly: Your website is ready, the link is {link}. Use command: node deploy/deploy_skill.js wait-and-deliver --job-id ${jobId}`,
       runTimeoutSeconds: 900,
     },
   };
