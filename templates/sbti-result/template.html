@@ -266,36 +266,115 @@
       color: var(--accent);
     }
 
-    /* ── CTA ── */
-    .cta {
-      margin-top: 28px;
-      text-align: center;
+    /* ── Guide Section ── */
+    .guide-section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
     }
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .guide-card {
+      background: var(--accent-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .guide-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .guide-desc {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .guide-steps {
+      list-style: none;
+    }
+    .guide-step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 10px 0;
+    }
+    .guide-step + .guide-step {
+      border-top: 1px solid var(--border);
+    }
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
       background: var(--accent);
       color: #fff;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 14px 32px;
-      border-radius: 16px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(77, 106, 83, 0.25);
-      transition: transform 0.15s, box-shadow 0.15s;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
-    .cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 40px rgba(77, 106, 83, 0.35);
+    .step-content {
+      flex: 1;
+    }
+    .step-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .step-hint {
+      font-size: 11px;
+      color: var(--text-3);
+      line-height: 1.5;
+    }
+    .step-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      transition: opacity 0.15s;
+    }
+    .step-link:hover { opacity: 0.85; }
+    .step-link.outline {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+    .step-code {
+      display: block;
+      margin-top: 6px;
+      padding: 6px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--text-2);
+      word-break: break-all;
+      line-height: 1.5;
+      cursor: pointer;
+      position: relative;
+    }
+    .step-code:active { background: var(--accent-bg); }
+
+    /* ── CTA ── */
+    .cta {
+      margin-top: 20px;
+      text-align: center;
     }
     .share-row {
       display: flex;
       gap: 8px;
       justify-content: center;
-      margin-top: 14px;
     }
     .share-btn {
       padding: 8px 16px;
@@ -531,11 +610,44 @@
       </ul>
     </div>
 
-    <!-- ── CTA ── -->
+    <!-- ── Guide ── -->
+    <div class="guide-section">
+      <div class="guide-card">
+        <div class="guide-title">🧠 想测测你的赛博人格？</div>
+        <div class="guide-desc">SBTI 测试通过 AI Agent 完成，你需要先安装 nexu 客户端，再给你的 AI 数字员工装上这个 Skill。</div>
+        <ul class="guide-steps">
+          <li class="guide-step">
+            <span class="step-num">1</span>
+            <div class="step-content">
+              <div class="step-label">下载 nexu 客户端</div>
+              <div class="step-hint">开源 AI 数字员工客户端，支持 macOS</div>
+              <a class="step-link" href="https://github.com/nexu-io/nexu" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                前往 GitHub 下载
+              </a>
+            </div>
+          </li>
+          <li class="guide-step">
+            <span class="step-num">2</span>
+            <div class="step-content">
+              <div class="step-label">安装 SBTI Skill</div>
+              <div class="step-hint">打开 nexu，对你的 AI 数字员工说：</div>
+              <div class="step-code" onclick="copySkill(this)">帮我安装这个 skill：https://github.com/nexu-io/sbti-skill</div>
+            </div>
+          </li>
+          <li class="guide-step">
+            <span class="step-num">3</span>
+            <div class="step-content">
+              <div class="step-label">开始测试</div>
+              <div class="step-hint">安装完成后，对你的数字员工说「做一个 SBTI 测试」就可以开始了！测完后还能生成你自己的分享页。</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── Share ── -->
     <div class="cta">
-      <a class="cta-btn" href="https://github.com/nexu-io/sbti-skill" target="_blank">
-        🧠 来测测你的赛博人格
-      </a>
       <div class="share-row">
         <button class="share-btn" onclick="copyLink()">🔗 复制链接</button>
         <button class="share-btn" onclick="shareX()">𝕏 分享</button>
@@ -564,6 +676,13 @@ function copyLink() {
     var btn = event.target;
     btn.textContent = '✅ 已复制';
     setTimeout(function() { btn.textContent = '🔗 复制链接'; }, 1800);
+  });
+}
+function copySkill(el) {
+  navigator.clipboard.writeText(el.textContent).then(function() {
+    var orig = el.textContent;
+    el.textContent = '✅ 已复制到剪贴板';
+    setTimeout(function() { el.textContent = orig; }, 1800);
   });
 }
 </script>
