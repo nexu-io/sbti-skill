@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,313 +7,269 @@
   <meta name="description" content="{{OPENING_LINE}} — 匹配度 {{MATCH_PERCENT}}%。30 题 × 15 维度 × 27 种赛博人格，来测测你的！" />
   <meta property="og:title" content="我的 SBTI 赛博人格：【{{PERSONALITY_CODE}}】{{PERSONALITY_NAME}}" />
   <meta property="og:description" content="{{OPENING_LINE}} — 匹配度 {{MATCH_PERCENT}}%" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="https://luoluo.help/sbti/{{AVATAR_CODE}}.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg-deep: #06060c;
-      --bg: #0c0c14;
-      --surface: #14141f;
-      --surface-2: #1a1a28;
-      --border: #222236;
-      --text: #eaeaf0;
-      --text-2: #9898b0;
-      --text-3: #606078;
-      --accent: #8b5cf6;
-      --accent-dim: rgba(139, 92, 246, 0.15);
-      --accent-glow: rgba(139, 92, 246, 0.4);
-      --green: #22c55e;
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --cyan: #06b6d4;
-      --pink: #ec4899;
-      --radius: 20px;
-      --radius-sm: 12px;
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
-    }
-    [data-theme="light"] {
-      --bg-deep: #f0f0f5;
-      --bg: #f5f5fa;
+      --bg: #f6faf6;
       --surface: #ffffff;
-      --surface-2: #f0f0f5;
-      --border: #e0e0ea;
-      --text: #18182b;
-      --text-2: #555570;
-      --text-3: #888899;
-      --accent-dim: rgba(139, 92, 246, 0.08);
+      --surface-2: #f2f7f3;
+      --border: #dbe8dd;
+      --text: #1e2a22;
+      --text-2: #3a4a3e;
+      --text-3: #6a786f;
+      --text-4: #9aa69e;
+      --accent: #4d6a53;
+      --accent-light: #8fb896;
+      --accent-bg: #edf6ef;
+      --bar-track: #edf6ef;
+      --green: #10b981;
+      --green-text: #047857;
+      --amber: #fbbf24;
+      --amber-text: #d97706;
+      --red: #f87171;
+      --red-text: #ef4444;
+      --font: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: var(--font-sans);
-      background: var(--bg-deep);
+      font-family: var(--font);
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Layout ─── */
-    .page { max-width: 640px; margin: 0 auto; padding: 0 16px 80px; }
-
-    /* ─── Theme Toggle ─── */
-    .theme-btn {
-      position: fixed; top: 16px; right: 16px; z-index: 100;
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 1px solid var(--border); background: var(--surface);
-      color: var(--text); cursor: pointer; font-size: 18px;
-      display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(12px); transition: border-color .2s;
-    }
-    .theme-btn:hover { border-color: var(--accent); }
-
-    /* ─── Hero Section ─── */
-    .hero {
-      text-align: center;
-      padding: 60px 0 40px;
-      position: relative;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 20px; left: 50%; transform: translateX(-50%);
-      width: 320px; height: 320px;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      opacity: 0.3;
-      pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--accent-dim);
-      color: var(--accent);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 13px; font-weight: 600;
-      letter-spacing: 0.5px;
-      margin-bottom: 24px;
-    }
-    .hero-code {
-      font-family: var(--font-mono);
-      font-size: 72px;
-      font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 1;
-      background: linear-gradient(135deg, var(--accent), var(--pink), var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 8px;
-      position: relative;
-    }
-    .hero-name {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-2);
-      margin-bottom: 24px;
-    }
-    .hero-match {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
+    .page {
+      max-width: 420px;
+      margin: 0 auto;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      padding: 10px 24px;
+      min-height: 100vh;
+      box-shadow: 0 0 60px rgba(47, 73, 55, 0.08);
     }
-    .hero-match-label { font-size: 14px; color: var(--text-3); }
-    .hero-match-bar {
-      width: 120px; height: 6px;
+
+    /* ── Avatar Section ── */
+    .avatar-section {
+      position: relative;
+      aspect-ratio: 4 / 3;
       background: var(--surface-2);
-      border-radius: 3px;
       overflow: hidden;
     }
-    .hero-match-fill {
-      height: 100%; border-radius: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--cyan));
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    .hero-match-val {
-      font-family: var(--font-mono);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--accent);
+    .avatar-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 50%);
     }
-
-    /* ─── Cards ─── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      margin-bottom: 16px;
-    }
-    .card-label {
-      font-size: 12px; font-weight: 600;
-      color: var(--text-3);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 16px;
-    }
-
-    /* ─── Opening Line ─── */
-    .quote-card {
-      background: linear-gradient(135deg, var(--accent-dim), rgba(236, 72, 153, 0.06));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 32px;
-      margin-bottom: 16px;
-      text-align: center;
-      position: relative;
-    }
-    .quote-mark {
-      font-size: 48px;
-      line-height: 1;
-      color: var(--accent);
-      opacity: 0.5;
-    }
-    .quote-text {
-      font-size: 22px;
-      font-weight: 700;
-      line-height: 1.6;
-      margin: 8px 0;
-    }
-
-    /* ─── Description ─── */
-    .desc-text {
-      font-size: 16px;
-      line-height: 2;
-      color: var(--text);
-    }
-
-    /* ─── Level Code ─── */
-    .level-strip {
+    .avatar-info {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 14px;
-      background: var(--surface-2);
-      border-radius: var(--radius-sm);
-      margin-bottom: 24px;
-      font-family: var(--font-mono);
+      align-items: baseline;
+      gap: 10px;
+    }
+    .avatar-code {
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      letter-spacing: -0.5px;
+    }
+    .avatar-name {
       font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .level-strip .sep { color: var(--text-3); margin: 0 2px; }
-    .lv-h { color: var(--accent); }
-    .lv-m { color: var(--amber); }
-    .lv-l { color: var(--red); }
-
-    /* ─── Dimensions ─── */
-    .model-section { margin-bottom: 24px; }
-    .model-section:last-child { margin-bottom: 0; }
-    .model-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .model-icon {
-      width: 28px; height: 28px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-    .model-icon.s { background: rgba(139, 92, 246, 0.15); }
-    .model-icon.e { background: rgba(236, 72, 153, 0.15); }
-    .model-icon.a { background: rgba(6, 182, 212, 0.15); }
-    .model-icon.ac { background: rgba(34, 197, 94, 0.15); }
-    .model-icon.so { background: rgba(245, 158, 11, 0.15); }
-    .model-name {
-      font-size: 14px;
       font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .match-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 5px 14px;
+    }
+
+    /* ── Content Section ── */
+    .content {
+      padding: 24px 20px 32px;
+    }
+
+    .quote {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .description {
+      font-size: 14px;
       color: var(--text-2);
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+
+    /* ── Summary Strip ── */
+    .summary-strip {
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+      padding: 16px 0;
+      margin-bottom: 20px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .summary-bars {
+      display: flex;
+      gap: 1px;
+      align-items: flex-end;
+    }
+    .summary-bar {
+      width: 10px;
+      border-radius: 2px;
+    }
+    .summary-bar.h { height: 14px; background: var(--green); }
+    .summary-bar.m { height: 9px; background: var(--amber); }
+    .summary-bar.l { height: 4px; background: var(--red); }
+    .summary-label {
+      font-size: 10px;
+      color: var(--text-4);
+    }
+
+    /* ── Dimension Section ── */
+    .model-group {
+      margin-bottom: 16px;
+    }
+    .model-group:last-child { margin-bottom: 0; }
+    .model-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      margin-bottom: 8px;
     }
     .dim-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 6px 0;
+      gap: 8px;
+      padding: 4px 0;
     }
-    .dim-name {
-      font-size: 13px;
+    .dim-label {
+      font-size: 12px;
       color: var(--text-3);
-      width: 76px;
+      width: 72px;
       flex-shrink: 0;
-      text-align: right;
     }
-    .dim-bar {
+    .dim-track {
       flex: 1;
       height: 8px;
-      background: var(--surface-2);
-      border-radius: 4px;
+      background: var(--bar-track);
+      border-radius: 999px;
       overflow: hidden;
     }
     .dim-fill {
       height: 100%;
-      border-radius: 4px;
-      transition: width .8s cubic-bezier(.22, .61, .36, 1);
+      border-radius: 999px;
+      transition: width 0.6s ease;
     }
-    .dim-fill.h { width: 100%; background: var(--accent); }
+    .dim-fill.h { width: 100%; background: var(--green); }
     .dim-fill.m { width: 60%; background: var(--amber); }
     .dim-fill.l { width: 25%; background: var(--red); }
-    .dim-tag {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      width: 20px;
+    .dim-level {
+      font-size: 11px;
+      font-weight: 600;
+      width: 18px;
       text-align: center;
+      flex-shrink: 0;
     }
-    .dim-tag.h { color: var(--accent); }
-    .dim-tag.m { color: var(--amber); }
-    .dim-tag.l { color: var(--red); }
+    .dim-level.h { color: var(--green-text); }
+    .dim-level.m { color: var(--amber-text); }
+    .dim-level.l { color: var(--red-text); }
 
-    /* ─── TOP 3 ─── */
-    .top-list { list-style: none; }
+    /* ── TOP 3 Section ── */
+    .top-section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .top-list {
+      list-style: none;
+    }
     .top-item {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 6px;
     }
-    .top-item:last-child { border-bottom: none; }
+    .top-item.current {
+      background: var(--accent-bg);
+    }
     .top-rank {
-      width: 32px; height: 32px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 800;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
       flex-shrink: 0;
     }
     .top-rank.r1 { background: var(--accent); color: #fff; }
-    .top-rank.r2 { background: var(--accent-dim); color: var(--accent); }
-    .top-rank.r3 { background: var(--accent-dim); color: var(--accent); }
-    .top-info { flex: 1; }
-    .top-code {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 15px;
+    .top-rank.r2 { background: var(--accent-bg); color: var(--accent); }
+    .top-rank.r3 { background: var(--accent-bg); color: var(--accent); }
+    .top-info {
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
     }
-    .top-pname {
-      font-size: 13px;
+    .top-code {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .top-name {
+      font-size: 12px;
       color: var(--text-3);
     }
     .top-pct {
-      font-family: var(--font-mono);
+      font-size: 14px;
       font-weight: 700;
-      font-size: 16px;
       color: var(--accent);
     }
-    .top-item.current { background: var(--accent-dim); margin: 0 -16px; padding: 14px 16px; border-radius: var(--radius-sm); }
-    .top-item.current .top-code { color: var(--accent); }
 
-    /* ─── CTA ─── */
-    .cta-section {
+    /* ── CTA ── */
+    .cta {
+      margin-top: 28px;
       text-align: center;
-      padding: 40px 0 0;
     }
     .cta-btn {
       display: inline-flex;
@@ -321,310 +277,288 @@
       gap: 8px;
       background: var(--accent);
       color: #fff;
-      padding: 16px 36px;
-      border-radius: 14px;
-      text-decoration: none;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 16px;
+      text-decoration: none;
       border: none;
       cursor: pointer;
-      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 12px 30px rgba(77, 106, 83, 0.25);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
     .cta-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 32px var(--accent-glow);
+      box-shadow: 0 16px 40px rgba(77, 106, 83, 0.35);
     }
     .share-row {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
-      margin-top: 16px;
-      flex-wrap: wrap;
+      margin-top: 14px;
     }
     .share-btn {
-      padding: 10px 20px;
+      padding: 8px 16px;
       border-radius: 10px;
       border: 1px solid var(--border);
       background: var(--surface);
-      color: var(--text);
+      color: var(--text-2);
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
-      transition: border-color .2s, background .2s;
+      transition: all 0.2s;
     }
     .share-btn:hover {
       border-color: var(--accent);
-      background: var(--accent-dim);
+      background: var(--accent-bg);
+      color: var(--accent);
     }
 
-    /* ─── Footer ─── */
+    /* ── Footer ── */
     .footer {
       text-align: center;
-      padding: 32px 0 0;
-      font-size: 13px;
-      color: var(--text-3);
+      padding: 24px 20px;
+      font-size: 12px;
+      color: var(--text-4);
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
     }
-    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
 
-    /* ─── Responsive ─── */
-    @media (max-width: 480px) {
-      .hero-code { font-size: 52px; }
-      .hero-name { font-size: 20px; }
-      .card { padding: 20px; }
-      .quote-card { padding: 24px 20px; }
-      .quote-text { font-size: 18px; }
-      .dim-name { width: 60px; font-size: 12px; }
+    @media (max-width: 420px) {
+      .page { max-width: 100%; }
+      .avatar-code { font-size: 26px; }
+      .dim-label { width: 64px; font-size: 11px; }
     }
   </style>
 </head>
 <body>
 
-<button class="theme-btn" onclick="toggleTheme()">☽</button>
-
 <div class="page">
 
-  <!-- ═══ HERO ═══ -->
-  <section class="hero">
-    <div class="hero-badge">🧠 SBTI 赛博人格测试</div>
-    <div class="hero-code">{{PERSONALITY_CODE}}</div>
-    <div class="hero-name">{{PERSONALITY_NAME}}</div>
-    <div class="hero-match">
-      <span class="hero-match-label">匹配度</span>
-      <div class="hero-match-bar"><div class="hero-match-fill" style="width:{{MATCH_PERCENT}}%"></div></div>
-      <span class="hero-match-val">{{MATCH_PERCENT}}%</span>
+  <!-- ═══ AVATAR HERO ═══ -->
+  <div class="avatar-section">
+    <img class="avatar-img" src="https://luoluo.help/sbti/{{AVATAR_CODE}}.webp" alt="{{PERSONALITY_CODE}}（{{PERSONALITY_NAME}}）" />
+    <div class="avatar-overlay"></div>
+    <div class="avatar-info">
+      <span class="avatar-code">{{PERSONALITY_CODE}}</span>
+      <span class="avatar-name">{{PERSONALITY_NAME}}</span>
     </div>
-  </section>
-
-  <!-- ═══ OPENING LINE ═══ -->
-  <div class="quote-card">
-    <div class="quote-mark">"</div>
-    <div class="quote-text">{{OPENING_LINE}}</div>
-    <div class="quote-mark">"</div>
+    <div class="match-badge">匹配度 {{MATCH_PERCENT}}%</div>
   </div>
 
-  <!-- ═══ PERSONALITY DESCRIPTION ═══ -->
-  <div class="card">
-    <div class="card-label">📖 人格解读</div>
-    <div class="desc-text">{{DESCRIPTION}}</div>
-  </div>
+  <!-- ═══ CONTENT ═══ -->
+  <div class="content">
 
-  <!-- ═══ 15 DIMENSIONS ═══ -->
-  <div class="card">
-    <div class="card-label">📊 15 维度分析</div>
+    <p class="quote">"{{OPENING_LINE}}"</p>
+    <p class="description">{{DESCRIPTION}}</p>
 
-    <div class="level-strip">
-      <!-- S1 S2 S3 -->
-      <span class="lv-{{S1_CLASS}}">{{S1}}</span>
-      <span class="lv-{{S2_CLASS}}">{{S2}}</span>
-      <span class="lv-{{S3_CLASS}}">{{S3}}</span>
-      <span class="sep">-</span>
-      <!-- E1 E2 E3 -->
-      <span class="lv-{{E1_CLASS}}">{{E1}}</span>
-      <span class="lv-{{E2_CLASS}}">{{E2}}</span>
-      <span class="lv-{{E3_CLASS}}">{{E3}}</span>
-      <span class="sep">-</span>
-      <!-- A1 A2 A3 -->
-      <span class="lv-{{A1_CLASS}}">{{A1}}</span>
-      <span class="lv-{{A2_CLASS}}">{{A2}}</span>
-      <span class="lv-{{A3_CLASS}}">{{A3}}</span>
-      <span class="sep">-</span>
-      <!-- Ac1 Ac2 Ac3 -->
-      <span class="lv-{{AC1_CLASS}}">{{AC1}}</span>
-      <span class="lv-{{AC2_CLASS}}">{{AC2}}</span>
-      <span class="lv-{{AC3_CLASS}}">{{AC3}}</span>
-      <span class="sep">-</span>
-      <!-- So1 So2 So3 -->
-      <span class="lv-{{SO1_CLASS}}">{{SO1}}</span>
-      <span class="lv-{{SO2_CLASS}}">{{SO2}}</span>
-      <span class="lv-{{SO3_CLASS}}">{{SO3}}</span>
-    </div>
-
-    <!-- Self Model -->
-    <div class="model-section">
-      <div class="model-header">
-        <div class="model-icon s">🧠</div>
-        <span class="model-name">自我模型 (S)</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">自尊自信</span>
-        <div class="dim-bar"><div class="dim-fill {{S1_CLASS}}"></div></div>
-        <span class="dim-tag {{S1_CLASS}}">{{S1}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">自我清晰度</span>
-        <div class="dim-bar"><div class="dim-fill {{S2_CLASS}}"></div></div>
-        <span class="dim-tag {{S2_CLASS}}">{{S2}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">核心价值</span>
-        <div class="dim-bar"><div class="dim-fill {{S3_CLASS}}"></div></div>
-        <span class="dim-tag {{S3_CLASS}}">{{S3}}</span>
-      </div>
-    </div>
-
-    <!-- Emotion Model -->
-    <div class="model-section">
-      <div class="model-header">
-        <div class="model-icon e">💗</div>
-        <span class="model-name">情感模型 (E)</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">依恋安全感</span>
-        <div class="dim-bar"><div class="dim-fill {{E1_CLASS}}"></div></div>
-        <span class="dim-tag {{E1_CLASS}}">{{E1}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">情感投入度</span>
-        <div class="dim-bar"><div class="dim-fill {{E2_CLASS}}"></div></div>
-        <span class="dim-tag {{E2_CLASS}}">{{E2}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">边界与依赖</span>
-        <div class="dim-bar"><div class="dim-fill {{E3_CLASS}}"></div></div>
-        <span class="dim-tag {{E3_CLASS}}">{{E3}}</span>
-      </div>
-    </div>
-
-    <!-- Attitude Model -->
-    <div class="model-section">
-      <div class="model-header">
-        <div class="model-icon a">🌍</div>
-        <span class="model-name">态度模型 (A)</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">世界观倾向</span>
-        <div class="dim-bar"><div class="dim-fill {{A1_CLASS}}"></div></div>
-        <span class="dim-tag {{A1_CLASS}}">{{A1}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">规则灵活度</span>
-        <div class="dim-bar"><div class="dim-fill {{A2_CLASS}}"></div></div>
-        <span class="dim-tag {{A2_CLASS}}">{{A2}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">人生意义感</span>
-        <div class="dim-bar"><div class="dim-fill {{A3_CLASS}}"></div></div>
-        <span class="dim-tag {{A3_CLASS}}">{{A3}}</span>
-      </div>
-    </div>
-
-    <!-- Action Drive Model -->
-    <div class="model-section">
-      <div class="model-header">
-        <div class="model-icon ac">⚡</div>
-        <span class="model-name">行动驱力 (Ac)</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">动机导向</span>
-        <div class="dim-bar"><div class="dim-fill {{AC1_CLASS}}"></div></div>
-        <span class="dim-tag {{AC1_CLASS}}">{{AC1}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">决策风格</span>
-        <div class="dim-bar"><div class="dim-fill {{AC2_CLASS}}"></div></div>
-        <span class="dim-tag {{AC2_CLASS}}">{{AC2}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">执行模式</span>
-        <div class="dim-bar"><div class="dim-fill {{AC3_CLASS}}"></div></div>
-        <span class="dim-tag {{AC3_CLASS}}">{{AC3}}</span>
-      </div>
-    </div>
-
-    <!-- Social Model -->
-    <div class="model-section">
-      <div class="model-header">
-        <div class="model-icon so">🤝</div>
-        <span class="model-name">社交模型 (So)</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">社交主动性</span>
-        <div class="dim-bar"><div class="dim-fill {{SO1_CLASS}}"></div></div>
-        <span class="dim-tag {{SO1_CLASS}}">{{SO1}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">人际边界感</span>
-        <div class="dim-bar"><div class="dim-fill {{SO2_CLASS}}"></div></div>
-        <span class="dim-tag {{SO2_CLASS}}">{{SO2}}</span>
-      </div>
-      <div class="dim-row">
-        <span class="dim-name">表达真实度</span>
-        <div class="dim-bar"><div class="dim-fill {{SO3_CLASS}}"></div></div>
-        <span class="dim-tag {{SO3_CLASS}}">{{SO3}}</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ TOP 3 ═══ -->
-  <div class="card">
-    <div class="card-label">🏆 最接近的人格 TOP 3</div>
-    <ul class="top-list">
-      <li class="top-item current">
-        <span class="top-rank r1">1</span>
-        <div class="top-info">
-          <span class="top-code">{{TOP1_CODE}}</span>
-          <span class="top-pname">{{TOP1_NAME}}</span>
+    <!-- ── Summary Strip ── -->
+    <div class="summary-strip">
+      <div class="summary-group">
+        <div class="summary-bars">
+          <div class="summary-bar {{S1_CLASS}}"></div>
+          <div class="summary-bar {{S2_CLASS}}"></div>
+          <div class="summary-bar {{S3_CLASS}}"></div>
         </div>
-        <span class="top-pct">{{TOP1_PCT}}%</span>
-      </li>
-      <li class="top-item">
-        <span class="top-rank r2">2</span>
-        <div class="top-info">
-          <span class="top-code">{{TOP2_CODE}}</span>
-          <span class="top-pname">{{TOP2_NAME}}</span>
+        <span class="summary-label">自我</span>
+      </div>
+      <div class="summary-group">
+        <div class="summary-bars">
+          <div class="summary-bar {{E1_CLASS}}"></div>
+          <div class="summary-bar {{E2_CLASS}}"></div>
+          <div class="summary-bar {{E3_CLASS}}"></div>
         </div>
-        <span class="top-pct">{{TOP2_PCT}}%</span>
-      </li>
-      <li class="top-item">
-        <span class="top-rank r3">3</span>
-        <div class="top-info">
-          <span class="top-code">{{TOP3_CODE}}</span>
-          <span class="top-pname">{{TOP3_NAME}}</span>
+        <span class="summary-label">情感</span>
+      </div>
+      <div class="summary-group">
+        <div class="summary-bars">
+          <div class="summary-bar {{A1_CLASS}}"></div>
+          <div class="summary-bar {{A2_CLASS}}"></div>
+          <div class="summary-bar {{A3_CLASS}}"></div>
         </div>
-        <span class="top-pct">{{TOP3_PCT}}%</span>
-      </li>
-    </ul>
+        <span class="summary-label">态度</span>
+      </div>
+      <div class="summary-group">
+        <div class="summary-bars">
+          <div class="summary-bar {{AC1_CLASS}}"></div>
+          <div class="summary-bar {{AC2_CLASS}}"></div>
+          <div class="summary-bar {{AC3_CLASS}}"></div>
+        </div>
+        <span class="summary-label">行动</span>
+      </div>
+      <div class="summary-group">
+        <div class="summary-bars">
+          <div class="summary-bar {{SO1_CLASS}}"></div>
+          <div class="summary-bar {{SO2_CLASS}}"></div>
+          <div class="summary-bar {{SO3_CLASS}}"></div>
+        </div>
+        <span class="summary-label">社交</span>
+      </div>
+    </div>
+
+    <!-- ── Self Model ── -->
+    <div class="model-group">
+      <div class="model-title">自我</div>
+      <div class="dim-row">
+        <span class="dim-label">自尊自信</span>
+        <div class="dim-track"><div class="dim-fill {{S1_CLASS}}"></div></div>
+        <span class="dim-level {{S1_CLASS}}">{{S1}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">自我清晰度</span>
+        <div class="dim-track"><div class="dim-fill {{S2_CLASS}}"></div></div>
+        <span class="dim-level {{S2_CLASS}}">{{S2}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">核心价值</span>
+        <div class="dim-track"><div class="dim-fill {{S3_CLASS}}"></div></div>
+        <span class="dim-level {{S3_CLASS}}">{{S3}}</span>
+      </div>
+    </div>
+
+    <!-- ── Emotion Model ── -->
+    <div class="model-group">
+      <div class="model-title">情感</div>
+      <div class="dim-row">
+        <span class="dim-label">依恋安全感</span>
+        <div class="dim-track"><div class="dim-fill {{E1_CLASS}}"></div></div>
+        <span class="dim-level {{E1_CLASS}}">{{E1}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">情感投入度</span>
+        <div class="dim-track"><div class="dim-fill {{E2_CLASS}}"></div></div>
+        <span class="dim-level {{E2_CLASS}}">{{E2}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">边界与依赖</span>
+        <div class="dim-track"><div class="dim-fill {{E3_CLASS}}"></div></div>
+        <span class="dim-level {{E3_CLASS}}">{{E3}}</span>
+      </div>
+    </div>
+
+    <!-- ── Attitude Model ── -->
+    <div class="model-group">
+      <div class="model-title">态度</div>
+      <div class="dim-row">
+        <span class="dim-label">世界观倾向</span>
+        <div class="dim-track"><div class="dim-fill {{A1_CLASS}}"></div></div>
+        <span class="dim-level {{A1_CLASS}}">{{A1}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">规则与灵活度</span>
+        <div class="dim-track"><div class="dim-fill {{A2_CLASS}}"></div></div>
+        <span class="dim-level {{A2_CLASS}}">{{A2}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">人生意义感</span>
+        <div class="dim-track"><div class="dim-fill {{A3_CLASS}}"></div></div>
+        <span class="dim-level {{A3_CLASS}}">{{A3}}</span>
+      </div>
+    </div>
+
+    <!-- ── Action Drive Model ── -->
+    <div class="model-group">
+      <div class="model-title">行动</div>
+      <div class="dim-row">
+        <span class="dim-label">动机导向</span>
+        <div class="dim-track"><div class="dim-fill {{AC1_CLASS}}"></div></div>
+        <span class="dim-level {{AC1_CLASS}}">{{AC1}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">决策风格</span>
+        <div class="dim-track"><div class="dim-fill {{AC2_CLASS}}"></div></div>
+        <span class="dim-level {{AC2_CLASS}}">{{AC2}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">执行模式</span>
+        <div class="dim-track"><div class="dim-fill {{AC3_CLASS}}"></div></div>
+        <span class="dim-level {{AC3_CLASS}}">{{AC3}}</span>
+      </div>
+    </div>
+
+    <!-- ── Social Model ── -->
+    <div class="model-group">
+      <div class="model-title">社交</div>
+      <div class="dim-row">
+        <span class="dim-label">社交主动性</span>
+        <div class="dim-track"><div class="dim-fill {{SO1_CLASS}}"></div></div>
+        <span class="dim-level {{SO1_CLASS}}">{{SO1}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">人际边界感</span>
+        <div class="dim-track"><div class="dim-fill {{SO2_CLASS}}"></div></div>
+        <span class="dim-level {{SO2_CLASS}}">{{SO2}}</span>
+      </div>
+      <div class="dim-row">
+        <span class="dim-label">表达与真实度</span>
+        <div class="dim-track"><div class="dim-fill {{SO3_CLASS}}"></div></div>
+        <span class="dim-level {{SO3_CLASS}}">{{SO3}}</span>
+      </div>
+    </div>
+
+    <!-- ── TOP 3 ── -->
+    <div class="top-section">
+      <div class="section-title">🏆 最接近的人格 TOP 3</div>
+      <ul class="top-list">
+        <li class="top-item current">
+          <span class="top-rank r1">1</span>
+          <div class="top-info">
+            <span class="top-code">{{TOP1_CODE}}</span>
+            <span class="top-name">{{TOP1_NAME}}</span>
+          </div>
+          <span class="top-pct">{{TOP1_PCT}}%</span>
+        </li>
+        <li class="top-item">
+          <span class="top-rank r2">2</span>
+          <div class="top-info">
+            <span class="top-code">{{TOP2_CODE}}</span>
+            <span class="top-name">{{TOP2_NAME}}</span>
+          </div>
+          <span class="top-pct">{{TOP2_PCT}}%</span>
+        </li>
+        <li class="top-item">
+          <span class="top-rank r3">3</span>
+          <div class="top-info">
+            <span class="top-code">{{TOP3_CODE}}</span>
+            <span class="top-name">{{TOP3_NAME}}</span>
+          </div>
+          <span class="top-pct">{{TOP3_PCT}}%</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ── CTA ── -->
+    <div class="cta">
+      <a class="cta-btn" href="https://github.com/nexu-io/sbti-skill" target="_blank">
+        🧠 来测测你的赛博人格
+      </a>
+      <div class="share-row">
+        <button class="share-btn" onclick="copyLink()">🔗 复制链接</button>
+        <button class="share-btn" onclick="shareX()">𝕏 分享</button>
+      </div>
+    </div>
+
   </div>
 
-  <!-- ═══ CTA ═══ -->
-  <section class="cta-section">
-    <a class="cta-btn" href="https://github.com/nexu-io/sbti-skill" target="_blank">
-      🧠 测测你的赛博人格
-    </a>
-    <div class="share-row">
-      <button class="share-btn" onclick="shareX()">𝕏 分享</button>
-      <button class="share-btn" onclick="shareRedNote()">📕 小红书</button>
-      <button class="share-btn" onclick="copyLink()">🔗 复制链接</button>
-    </div>
-  </section>
-
-  <footer class="footer">
+  <!-- ── Footer ── -->
+  <div class="footer">
     <p>由 <a href="https://github.com/nexu-io/nexu" target="_blank">nexu</a> 驱动 ·
        <a href="https://github.com/nexu-io/sbti-skill" target="_blank">sbti-skill</a> ·
-       原版测试 <a href="https://sbti.unun.dev/" target="_blank">sbti.unun.dev</a></p>
-  </footer>
+       原版测试 <a href="https://sbti.watcha.cn/" target="_blank">sbti.watcha.cn</a></p>
+  </div>
+
 </div>
 
 <script>
-function toggleTheme() {
-  const html = document.documentElement;
-  const next = html.dataset.theme === 'light' ? 'dark' : 'light';
-  html.dataset.theme = next;
-  document.querySelector('.theme-btn').textContent = next === 'light' ? '☀' : '☽';
-  localStorage.setItem('sbti-theme', next);
-}
-(function() {
-  const saved = localStorage.getItem('sbti-theme') || 'dark';
-  document.documentElement.dataset.theme = saved;
-  document.querySelector('.theme-btn').textContent = saved === 'light' ? '☀' : '☽';
-})();
-
 function shareX() {
-  const t = encodeURIComponent('我的 SBTI 赛博人格是【{{PERSONALITY_CODE}}】{{PERSONALITY_NAME}}！匹配度 {{MATCH_PERCENT}}% 🧠 来测测你的 →');
-  const u = encodeURIComponent(location.href);
+  var t = encodeURIComponent('我的 SBTI 赛博人格是【{{PERSONALITY_CODE}}】{{PERSONALITY_NAME}}！匹配度 {{MATCH_PERCENT}}% 🧠 来测测你的 →');
+  var u = encodeURIComponent(location.href);
   window.open('https://twitter.com/intent/tweet?text=' + t + '&url=' + u, '_blank');
 }
-function shareRedNote() { window.open('xhsdiscover://post', '_blank'); }
 function copyLink() {
   navigator.clipboard.writeText(location.href).then(function() {
     var btn = event.target;

@@ -250,28 +250,36 @@ node {baseDir}/deploy/deploy_skill.js setup --base-url https://deploy.nexu.io
 | `{{MATCH_PERCENT}}` | 匹配度百分比（纯数字） | `93` |
 | `{{OPENING_LINE}}` | 开场白 | `怎么样，被我拿捏了吧？` |
 | `{{DESCRIPTION}}` | 完整人格描述 | （从 personalities.md 获取） |
+| `{{AVATAR_CODE}}` | 头像图片代码（用于拼接图片 URL） | `CTRL` |
+
+**头像代码映射规则：**
+- 大多数人格直接用 `PERSONALITY_CODE`，如 `CTRL` → `CTRL`
+- `WOC!` → `WOC`（去掉感叹号）
+- `HHHH` 和 `DRUNK` 为特殊人格，无头像，可用 `HHHH` / `DRUNK`
+- 图片来源：`https://luoluo.help/sbti/{AVATAR_CODE}.webp`
 
 **15 维度占位符（每个维度两个：等级值 + CSS class）：**
 
 | 维度 | 值占位符 | class 占位符 | 说明 |
 |------|---------|-------------|------|
-| S1 自尊自信 | `{{S1}}` | `{{S1_CLASS}}` | 值填 H/M/L，class 填 h/m/l |
+| S1 自尊自信 | `{{S1}}` | `{{S1_CLASS}}` | 值填 高/中/低，class 填 h/m/l |
 | S2 自我清晰度 | `{{S2}}` | `{{S2_CLASS}}` | 同上 |
 | S3 核心价值 | `{{S3}}` | `{{S3_CLASS}}` | 同上 |
 | E1 依恋安全感 | `{{E1}}` | `{{E1_CLASS}}` | 同上 |
 | E2 情感投入度 | `{{E2}}` | `{{E2_CLASS}}` | 同上 |
 | E3 边界与依赖 | `{{E3}}` | `{{E3_CLASS}}` | 同上 |
 | A1 世界观倾向 | `{{A1}}` | `{{A1_CLASS}}` | 同上 |
-| A2 规则灵活度 | `{{A2}}` | `{{A2_CLASS}}` | 同上 |
+| A2 规则与灵活度 | `{{A2}}` | `{{A2_CLASS}}` | 同上 |
 | A3 人生意义感 | `{{A3}}` | `{{A3_CLASS}}` | 同上 |
 | Ac1 动机导向 | `{{AC1}}` | `{{AC1_CLASS}}` | 同上 |
 | Ac2 决策风格 | `{{AC2}}` | `{{AC2_CLASS}}` | 同上 |
 | Ac3 执行模式 | `{{AC3}}` | `{{AC3_CLASS}}` | 同上 |
 | So1 社交主动性 | `{{SO1}}` | `{{SO1_CLASS}}` | 同上 |
 | So2 人际边界感 | `{{SO2}}` | `{{SO2_CLASS}}` | 同上 |
-| So3 表达真实度 | `{{SO3}}` | `{{SO3_CLASS}}` | 同上 |
+| So3 表达与真实度 | `{{SO3}}` | `{{SO3_CLASS}}` | 同上 |
 
-class 规则：等级 H → `h`，M → `m`，L → `l`（小写）
+class 规则：高 → `h`，中 → `m`，低 → `l`（小写）
+值显示规则：高 → `高`，中 → `中`，低 → `低`（中文）
 
 **TOP 3 占位符：**
 
